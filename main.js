@@ -7,11 +7,11 @@ const doubleSixes = [];
 const twelves = [];
 const twenties = [];
 
-/*******************************************************************
+/********************
  * Helper Functions*
- ******************************************************************/
+ ********************/
 
-const getRandomNumber = function(max) {
+const getRandomNumber = function (max) {
   const rand = Math.random();
   const range = rand * max;
   const result = Math.ceil(range);
@@ -19,44 +19,34 @@ const getRandomNumber = function(max) {
   return result;
 }
 
-const sortByNumber = function(arr) {
-  const byNumber = function(item1, item2) {
+const sortByNumber = function (arr) {
+  const byNumber = function (item1, item2) {
     return item1 - item2;
   }
 
   return arr.slice().sort(byNumber);
 }
 
-const getImagePathD6 = function(roll) {
+const getImagePathD6 = function (roll) {
   return `./images/d6/${roll}.png`;
 }
 
-const getImagePathNumbers = function(roll) {
+const getImagePathNumbers = function (roll) {
   return `./images/numbers/${roll}.png`;
 }
 
-const setText = function(selector, text) {
+const setText = function (selector, text) {
   document.querySelector(selector).innerText = text;
 }
 
-const setSrc = function(selector, src) {
+const setSrc = function (selector, src) {
   document.querySelector(selector).src = src;
 }
 
-const addClickEventHandler = function(selector, func) {
+const addClickEventHandler = function (selector, func) {
   document.querySelector(selector).addEventListener('click', func);
 }
 
-const addThing = function(selector, value, type) {
-  const node = document.querySelector(selector);
-  if (type === 'src') {
-    node.src = value;
-  } else if (type === 'text') {
-    node.innerText = value;
-  } else if (type === 'click') {
-    node.addEventListener('click', value);
-  }
-}
 
 /******************
  * QUERIES*
@@ -85,10 +75,10 @@ const d20Mode = document.querySelector('#d20-rolls-mode');
 
 
 /***************************
- * CLICK HANDLER FUNCTIONS *
+ * CLICK HANDLING FUNCTIONS *
  ***************************/
 
-const rollD6 = function() {
+const rollD6 = function () {
   const roll = getRandomNumber(6);
   sixes.push(roll);
   const median = getMedian(sixes);
@@ -101,9 +91,9 @@ const rollD6 = function() {
   d6Mode.innerText = mode;
 }
 
-const rollDoubleD6 = function() {
+const rollDoubleD6 = function () {
   const roll1 = getRandomNumber(6);
-  const roll2 = getRandomNumber(6);Z
+  const roll2 = getRandomNumber(6);
   doubleSixes.push(roll1 + roll2);
   const median = getMedian(doubleSixes);
   const mean = getMean(doubleSixes);
@@ -116,7 +106,7 @@ const rollDoubleD6 = function() {
   doubleD6Mode.innerText = mode;
 }
 
-const rollD12 = function() {
+const rollD12 = function () {
   const roll = getRandomNumber(12);
   twelves.push(roll);
   const median = getMedian(twelves);
@@ -129,7 +119,7 @@ const rollD12 = function() {
   d12Mode.innerText = mode;
 }
 
-const rollD20 = function() {
+const rollD20 = function () {
   const roll = getRandomNumber(20);
   twenties.push(roll);
   const median = getMedian(twenties);
@@ -147,7 +137,7 @@ const rollD20 = function() {
  ******************/
 
 
-const resetAll = function() {
+const resetAll = function () {
   sixes.splice(0)
   doubleSixes.splice(0)
   twelves.splice(0)
@@ -211,45 +201,45 @@ resetButton.addEventListener('click', resetAll);
 
 const getMean = (arr) => {
   let result = 0
-  for(let i = 0; i<arr.length; i++){
-      result += arr[i]
+  for (let i = 0; i < arr.length; i++) {
+    result += arr[i]
   } return (result / arr.length).toFixed(2)
 }
 
 const getMedian = (arr) => {
-  if(arr.length <= 1){
-      return arr;
+  if (arr.length <= 1) {
+    return arr;
   }
-  if(arr.length%2===0){
-      return arr.sort((a,b)=>{return a-b}).slice(Math.floor(arr.length/2),(Math.floor(arr.length/2)+1))
+  if (arr.length % 2 === 0) {
+    return arr.sort((a, b) => { return a - b }).slice(Math.floor(arr.length / 2), (Math.floor(arr.length / 2) + 1))
   }
-      return arr.sort((a,b)=>{return a-b}).slice(Math.floor(arr.length/2),(Math.floor(arr.length/2) *-1))
+  return arr.sort((a, b) => { return a - b }).slice(Math.floor(arr.length / 2), (Math.floor(arr.length / 2) * -1))
 }
 
 const getMode = (arr) => {
   let currentResult = 0;
   let secondResult = 0;
   let answer = '';
-  for(let i = 0; i<arr.length; i++){
-      for(let j = 0; j<arr.length; j++){
-          if(i<1){
-              if(arr[i]===arr[j]){
-              currentResult++
-              answer = arr[i]
-              }
-          } else{
-              if(arr[i]===arr[j]){
-              secondResult++
-              }
-          }
-          }
-          if(currentResult >= secondResult){
-              secondResult=0;
-          } else {
-              answer = arr[i]
-              currentResult = secondResult;
-              secondResult=0
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      if (i < 1) {
+        if (arr[i] === arr[j]) {
+          currentResult++
+          answer = arr[i]
+        }
+      } else {
+        if (arr[i] === arr[j]) {
+          secondResult++
+        }
       }
+    }
+    if (currentResult >= secondResult) {
+      secondResult = 0;
+    } else {
+      answer = arr[i]
+      currentResult = secondResult;
+      secondResult = 0
+    }
   }
   return answer;
 }
